@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KoWidgetExample", "KoWidgetExample.vs2012.csproj", "{415EFE62-7D81-4161-943B-4EADB5B1592B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{415EFE62-7D81-4161-943B-4EADB5B1592B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{415EFE62-7D81-4161-943B-4EADB5B1592B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{415EFE62-7D81-4161-943B-4EADB5B1592B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{415EFE62-7D81-4161-943B-4EADB5B1592B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
