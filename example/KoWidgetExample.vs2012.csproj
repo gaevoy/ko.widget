@@ -61,9 +61,21 @@
     <Content Include="App\Inbox\View.htm" />
     <Content Include="App\Inbox\ViewModel.js" />
     <Content Include="App\Inbox\Widget.js" />
+    <Content Include="App\News\View.htm" />
+    <Content Include="App\News\ViewModel.js" />
+    <Content Include="App\News\Widget.js" />
+    <Content Include="App\Page1\View.htm" />
+    <Content Include="App\Page1\ViewModel.js" />
+    <Content Include="App\Page1\Widget.js" />
+    <Content Include="App\Page2\View.htm" />
+    <Content Include="App\Page2\ViewModel.js" />
+    <Content Include="App\Page2\Widget.js" />
     <Content Include="App\Root\View.htm" />
     <Content Include="App\Root\ViewModel.js" />
     <Content Include="App\Root\Widget.js" />
+    <Content Include="App\UserInfo\View.htm" />
+    <Content Include="App\UserInfo\ViewModel.js" />
+    <Content Include="App\UserInfo\Widget.js" />
     <Content Include="Default.htm" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\knockout.js" />
@@ -73,10 +85,6 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App\News\" />
-    <Folder Include="App\Page1\" />
-    <Folder Include="App\Page2\" />
-    <Folder Include="App\UserInfo\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <PropertyGroup>

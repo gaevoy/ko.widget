@@ -1,11 +1,22 @@
-<div>
-    <div data-bind="inject: inbox"></div>
-    <div data-bind="inject: userInfo"></div>
+<div style="width: 200px">
 
-    <div><a data-bind="click: function(){ goto('App/Page1/Widget'); }" href="#">Page1</a> <a data-bind="click: function(){ goto('App/Page2/Widget'); }" href="#">Page2</a></div>
+    <header style="overflow: hidden">
+        <div data-bind="inject: inbox" style="float: left"></div>
+        <div data-bind="inject: userInfo" style="float: right"></div>
+    </header>
 
-    <div data-bind="inject: page"></div>
+    <nav>
+        <ul>
+            <li><a data-bind="click: function(){ goto('App/Page1/Widget'); }" href="#">Page1</a></li>
+            <li><a data-bind="click: function(){ goto('App/Page2/Widget'); }" href="#">Page2</a></li>
+        </ul>
+    </nav>
+    <section data-bind="inject: page">
+    </section>
 
-    <div data-bind="inject: allNews"></div>
-    <div data-bind="inject: userNews"></div>
+    <footer style="overflow: hidden">
+        <div data-bind="inject: allNews" style="float: left"></div>
+        <div data-bind="inject: userNews" style="float: right"></div>
+    </footer>
+
 </div>
