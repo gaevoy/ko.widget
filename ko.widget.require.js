@@ -53,6 +53,11 @@ define(["jquery", "knockout"], function ($, ko) {
         }
         //#endregion
     };
+	
+	ko.Widget.inherit = function inherit(derivedInstance, baseClass, args) {
+		var args = (args === undefined) ? [] : args;
+		baseClass.apply(derivedInstance, args);
+	};
 
     // inject: widgetToInject
     ko.bindingHandlers['inject'] = {
@@ -77,4 +82,5 @@ define(["jquery", "knockout"], function ($, ko) {
         }
     };
 
+	return ko.Widget;
 });

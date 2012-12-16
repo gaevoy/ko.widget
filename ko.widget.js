@@ -52,6 +52,11 @@ ko.Widget = function Widget() {
 	//#endregion
 };
 
+ko.Widget.inherit = function inherit(derivedInstance, baseClass, args) {
+	var args = (args === undefined) ? [] : args;
+	baseClass.apply(derivedInstance, args);
+};
+
 // inject: widgetToInject
 ko.bindingHandlers['inject'] = {
 	'init': function (element, valueAccessor) {

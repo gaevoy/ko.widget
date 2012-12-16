@@ -1,0 +1,5 @@
+/example/bin/*.*
+/example/obj/*.*
+/example/obj/Debug/*.*
+/example/KoWidgetExample.vs2012.csproj.user
+/example/KoWidgetExample.vs2012.v11.suo
