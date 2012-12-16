@@ -1,4 +1,4 @@
-define(["ko.Widget", "App/UserInfo/ViewModel", "text!App/UserInfo/View.htm"], function (Widget, ViewModel, View) {
+define(["ko.widget", "App/UserInfo/ViewModel", "text!App/UserInfo/View.htm"], function (Widget, ViewModel, View) {
 
     return function UserInfoWidget() {
         Widget.inherit(this, Widget);
