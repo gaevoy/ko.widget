@@ -6,9 +6,9 @@ MyWidget.js
 define(["ko.widget", "App/MyWidget/MyViewModel", "text!App/MyWidget/MyView.htm"],
     function (Widget, MyViewModel, MyView) {
 
-    return function MyWidget(title) {
+    return function MyWidget() {
         Widget.inherit(this, Widget);
-        this.viewModel = new MyViewModel(title);
+        this.viewModel = new MyViewModel();
         this.view = MyView;
     };
 
@@ -17,8 +17,8 @@ define(["ko.widget", "App/MyWidget/MyViewModel", "text!App/MyWidget/MyView.htm"]
 ##How to add widget to dom:
 ###1. Manually
 ```
-var app = new MyWidget();
-app.appendTo($(".my-container"));
+var myWidget = new MyWidget();
+myWidget.appendTo($(".my-container"));
 ```
 ###2. Using binding
 ```
