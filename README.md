@@ -1,4 +1,4 @@
-**ko.widget** is building block for your web application if you use **knockoutjs**
+**ko.widget** is building block for your web application if you use **Knockout**
 
 ##How to use:
 MyWidget.js
