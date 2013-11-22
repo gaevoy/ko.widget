@@ -10,7 +10,7 @@ require.config({
 });
 
 // entry point
-require(["jquery", "App/Root/Widget"], function ($, RootWidget) {
+require(["jquery", "App/Root/Widget", "knockout"], function ($, RootWidget, ko) {
 
     $(document).ready(function () {
 
@@ -19,4 +19,5 @@ require(["jquery", "App/Root/Widget"], function ($, RootWidget) {
 
     });
 
+    window._ko = ko;
 });
