@@ -100,7 +100,7 @@ define('ko.bindings/inject',["jquery", "knockout"], function ($, ko) {
             inject(element, valueAccessor());
             return { controlsDescendantBindings: true };
         },
-        'transition': function (prevElement, nextElement) {
+        'transition': function (prevElement, nextElement, containerElement) {
             if (prevElement) {
                 prevElement.remove();
             }
@@ -121,7 +121,7 @@ define('ko.bindings/inject',["jquery", "knockout"], function ($, ko) {
             }
 
             var prevEl = nextEl ? nextEl.prev() : containerEl.children().last();
-            ko.bindingHandlers['inject']['transition'](prevEl, nextEl);
+            ko.bindingHandlers['inject']['transition'](prevEl, nextEl, containerEl);
         }
 
         var containerEl = $(element);
@@ -142,6 +142,42 @@ define('ko.bindings/inject',["jquery", "knockout"], function ($, ko) {
     };
 
     return inject;
+
+});
+
+define('ko.bindings/injectAnimation',["jquery", "knockout", "./inject"], function ($, ko) {
+
+    // inject: widgetToInject
+    ko.bindingHandlers['injectAnimation'] = {
+        'update': function (element, valueAccessor) {
+            $(element).data("injectAnimation", ko.unwrap(valueAccessor()));
+        },
+        'animations': {
+            'none': function (prevElement, nextElement) {
+                if (prevElement) {
+                    prevElement.remove();
+                }
+            },
+            'fadeIn': function (prevElement, nextElement) {
+                if (prevElement) {
+                    prevElement.remove();
+                }
+                if (prevElement && nextElement) {
+                    nextElement.hide().fadeIn();
+                }
+            }
+        }
+    };
+
+    ko.bindingHandlers['inject']['transition'] = function (prevElement, nextElement, containerElement) {
+        var injectAnimation = containerElement.data("injectAnimation");
+        if (injectAnimation) {
+            var transition = ko.bindingHandlers['injectAnimation']['animations'][injectAnimation];
+            if (transition) {
+                transition(prevElement, nextElement);
+            }
+        }
+    };
 
 });
 
@@ -236,7 +272,7 @@ define('ko.bindings/windowInject',["jquery", "knockout", "WindowHost/WindowHostW
 
 });
 
-define('ko.widget',["knockout", "Widget", "ko.bindings/inject", "ko.bindings/windowInject"], function (ko, Widget, inject) {
+define('ko.widget',["knockout", "Widget", "ko.bindings/inject", "ko.bindings/injectAnimation", "ko.bindings/windowInject"], function (ko, Widget, inject) {
 
     Widget.inject = inject;
     ko.Widget = ko.widget = Widget;

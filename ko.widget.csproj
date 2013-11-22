@@ -60,6 +60,7 @@
     <Content Include="example\Default.htm" />
     <Content Include="lib\jquery-1.8.2.js" />
     <Content Include="lib\knockout-2.3.0.debug.js" />
+    <Content Include="src\ko.bindings\injectAnimation.js" />
     <Content Include="tests\ko.bindings\inject.js" />
     <Content Include="tests\lib\qunit.css" />
     <Content Include="tests\lib\qunit.js" />

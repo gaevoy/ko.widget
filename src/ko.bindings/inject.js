@@ -6,7 +6,7 @@
             inject(element, valueAccessor());
             return { controlsDescendantBindings: true };
         },
-        'transition': function (prevElement, nextElement) {
+        'transition': function (prevElement, nextElement, containerElement) {
             if (prevElement) {
                 prevElement.remove();
             }
@@ -27,7 +27,7 @@
             }
 
             var prevEl = nextEl ? nextEl.prev() : containerEl.children().last();
-            ko.bindingHandlers['inject']['transition'](prevEl, nextEl);
+            ko.bindingHandlers['inject']['transition'](prevEl, nextEl, containerEl);
         }
 
         var containerEl = $(element);
