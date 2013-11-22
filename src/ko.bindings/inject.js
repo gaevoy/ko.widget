@@ -1,6 +1,6 @@
 ﻿define(["jquery", "knockout"], function ($, ko) {
 
-    // inject: controlToInject
+    // inject: widgetToInject
     ko.bindingHandlers['inject'] = {
         'init': function (element, valueAccessor, allBindings) {
             var injectAnimation = allBindings().injectAnimation || "none";
@@ -56,10 +56,11 @@
             var subscription = ko.isObservable(widgetToInject) ? widgetToInject.subscribe(widgetChanged) : null;
 
             ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
-                ko.utils.domNodeDisposal.removeDisposeCallback(element, arguments.callee);
-
                 if (subscription) {
                     subscription.dispose();
+                }
+                if (currentWidget) {
+                    currentWidget.dispose();
                 }
             });
 

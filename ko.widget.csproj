@@ -60,6 +60,9 @@
     <Content Include="example\Default.htm" />
     <Content Include="lib\jquery-1.8.2.js" />
     <Content Include="lib\knockout-2.3.0.debug.js" />
+    <Content Include="tests\ko.bindings\inject.js" />
+    <Content Include="tests\lib\qunit.css" />
+    <Content Include="tests\lib\qunit.js" />
     <Content Include="lib\r.js" />
     <Content Include="lib\require.js" />
     <Content Include="lib\text.js" />
@@ -71,6 +74,8 @@
     <Content Include="src\WindowHost\WindowHostWidget.js" />
     <Content Include="src\WindowHost\WindowView.htm" />
     <Content Include="src\WindowHost\WindowViewModel.js" />
+    <Content Include="tests\Default.htm" />
+    <Content Include="tests\Widget.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

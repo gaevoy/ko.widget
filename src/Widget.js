@@ -31,7 +31,10 @@
             if (viewModel && viewModel.dispose) {
                 viewModel.dispose();
             }
-            element = null;
+            if (element && element[0]) {
+                ko.cleanNode(element[0]);
+                element = null;
+            }
             viewModel = null;
             view = null;
             disposed = true;
