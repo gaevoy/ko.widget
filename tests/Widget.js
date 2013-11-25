@@ -54,6 +54,22 @@
         equal(el.html(), '<i data-bind="text: title">knockout2</i>');
     });
 
+    test("Widget can be attach to another element after dispose", function () {
+        // Given
+        var el1 = createDiv();
+        var el2 = createDiv();
+        var widget = new TestWidget();
+        widget.appendTo(el1);
+        widget.dispose();
+
+        // When
+        widget.title("knockout3");
+        widget.appendTo(el2);
+
+        // Then
+        equal(el2.html(), '<i data-bind="text: title">knockout3</i>');
+    });
+
     function TestWidget(title) {
         Widget.extend(this, [{ title: ko.observable(title || "Test me") }, "<i data-bind='text: title'></i>"]);
         this.exportMethods("title");

@@ -2,7 +2,6 @@
     function Widget(viewModel, view) {
         var self = this;
         var element = null;
-        var disposed = false;
 
         this.setTemplate = function (name, template) {
             var re = new RegExp("(<!--" + name + "Template-->[ \r\n]*)((.|\r|\n)*?)([ \r\n]*<!--/" + name + "Template-->)", "g");
@@ -25,7 +24,12 @@
         this.appendTo = function (elementToAppend) {
             element = elementToAppend;
             setDebugInformation();
-            ensureBindingsAppliedJQuery();
+            var viewElement = $(view);
+            element.append(viewElement);
+            if (viewModel == null) {
+                throw new Error("Widget can not be attached because of viewModel is null");
+            }
+            ko.applyBindings(viewModel, viewElement[0]);
         };
         this.dispose = function () {
             if (viewModel && viewModel.dispose) {
@@ -35,9 +39,6 @@
                 ko.cleanNode(element[0]);
                 element = null;
             }
-            viewModel = null;
-            view = null;
-            disposed = true;
         };
 
         this.settings = function (object) {
@@ -56,14 +57,6 @@
                 }
             }
         };
-
-        function ensureBindingsAppliedJQuery() {
-            var viewElement = $(view);
-            element.append(viewElement);
-            if (viewModel != null) {
-                ko.applyBindings(viewModel, viewElement[0]);
-            }
-        }
         function getFunctionName(func) {
             if (func.name) {
                 return func.name;
