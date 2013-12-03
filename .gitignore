@@ -1,0 +1,5 @@
+/bin/**
+/obj/**
+/_ReSharper.ko.widget.pages/**
+/*.user
+/*.suo
