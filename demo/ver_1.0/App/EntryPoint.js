@@ -1,5 +1,5 @@
 require.config({
-    baseUrl: '/demo/ver_1.0/Scripts',
+    baseUrl: '/ko.widget/demo/ver_1.0/Scripts',
     paths: {
         "App": "../App"
     }
