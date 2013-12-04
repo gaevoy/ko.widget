@@ -1,4 +1,4 @@
-﻿define(["jquery", "knockout", "ko.bindings/inject"], function ($, ko) {
+﻿define(["jquery", "knockout", "ko.widget"], function ($, ko) {
 
     test("inject should invoke appendTo of widget", function () {
         // Given

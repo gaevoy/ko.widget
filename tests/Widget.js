@@ -1,4 +1,4 @@
-﻿define(["jquery", "knockout", "Widget"], function ($, ko, Widget) {
+﻿define(["jquery", "knockout", "ko.widget"], function ($, ko) {
 
     test("Widget can be appended to any element", function () {
         // Given
@@ -71,7 +71,7 @@
     });
 
     function TestWidget(title) {
-        Widget.extend(this, [{ title: ko.observable(title || "Test me") }, "<i data-bind='text: title'></i>"]);
+        ko.widget.extend(this, [{ title: ko.observable(title || "Test me") }, "<i data-bind='text: title'></i>"]);
         this.exportMethods("title");
     }
 
