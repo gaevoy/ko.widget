@@ -32,15 +32,15 @@
             <p>
                 is building block for your web application</p>
             <p>
-                <a class="btn btn-primary btn-lg" role="button">Learn more</a></p>
+                <a class="btn btn-primary btn-lg" role="button" href="#Overview">Learn more</a></p>
         </div>
-        <h3>
+        <h3 id="Overview">
             Overview</h3>
         <p>
-            Big amount of rich UI functionality is always become difficult. There is <a href="http://stackoverflow.com/questions/933723/what-is-component-driven-development">
-                Component Driven Development</a> which aimed to manage code complexity. There
-            are principles how to make components by <a href="http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod">
-                Uncle Bob</a>:
+            Big amount of rich UI functionality is always become difficult. <a href="http://stackoverflow.com/questions/933723/what-is-component-driven-development">
+                Component Driven Development</a> is aimed to manage code complexity. <a href="http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod">
+                    There are principles</a> how to make components by <a href="http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod">
+                        Uncle Bob</a>:
         </p>
         <ul>
             <li>REP - The Release Reuse Equivalency Principle</li>
@@ -57,19 +57,20 @@
         </p>
         <h3>
             How To Use</h3>
+        <h4>
+            Creating Widget</h4>
         <p>
-            To make ko.widget working your View and ViewModel should be wrapped in Widget
-            class. See Hello Word example:
+            To make ko.widget working your View and ViewModel should be wrapped in Widget class.
+            See Hello World example:
         </p>
         <ul class="nav nav-tabs">
             <li class="active"><a href="#ex1_View" data-toggle="tab">View.htm</a></li>
             <li><a href="#ex1_ViewModel" data-toggle="tab">ViewModel.js</a></li>
-            <li><a href="#ex1_Widget" data-toggle="tab">HelloWordWidget.js</a></li>
-            <li><a href="#ex1_App" data-toggle="tab">App.js</a></li>
+            <li><a href="#ex1_Widget" data-toggle="tab">HelloWorldWidget.js</a></li>
         </ul>
         <div class="tab-content">
             <pre class="tab-pane active" id="ex1_View">
-&lt;div class="example-1">
+&lt;div>
     &lt;h1>Example 1&lt;/h1>
     &lt;div data-bind="text: title">&lt;/div>
 &lt;/div>
@@ -78,31 +79,77 @@
 define(["knockout"], function (ko) {
 
     return function ViewModel() {
-        this.title = ko.observable("Hello Word");
-     
+        this.title = ko.observable("Hello World");
     };
 
 });</pre>
             <pre class="tab-pane" id="ex1_Widget">
 define(["ko.widget", "./ViewModel", "text!./View.htm"], function (Widget, ViewModel, View) {
 
-    return function HelloWordWidget() {
+    return function HelloWorldWidget() {
         Widget.extend(this, [new ViewModel(), View]);
     };
-
-});</pre>
-            <pre class="tab-pane" id="ex1_App">
-require(["jquery", "App/HelloWordWidget/Widget", "domReady!"], function ($, HelloWordWidget) {
-
-    var app = new HelloWordWidget();
-    app.appendTo($("body"));
 
 });</pre>
         </div>
         <p>
             Here is first working widget ready to be used. <i>Note: combine and minimize it using
-            <a href="requirejs.org/docs/optimization.html">r.js (RequireJS Optimizer tool)</a></i>.
+                <a href="requirejs.org/docs/optimization.html">r.js (RequireJS Optimizer tool)</a></i>.
         </p>
+        <h4>
+            Injecting Widget</h4>
+        <p>
+            HelloWorldWidget ready to be added into DOM. There are two way to do it:
+        </p>
+        <h5>
+            1. Calling <i>appendTo(element)</i> widget's method</h5>
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#ex2_App" data-toggle="tab">App.js</a></li>
+        </ul>
+        <div class="tab-content">
+            <pre class="tab-pane active" id="ex2_App">
+require(["jquery", "App/HelloWorldWidget/Widget", "domReady!"], function ($, HelloWorldWidget) {
+
+    var app = new HelloWorldWidget();
+    app.appendTo($("body"));
+
+});</pre>
+        </div>
+        <h5>
+            2. Using <i>inject</i> binding</h5>
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#ex3_App" data-toggle="tab">App.js</a></li>
+            <li><a href="#ex3_AppViewModel" data-toggle="tab">AppViewModel.js</a></li>
+            <li><a href="#ex3_AppView" data-toggle="tab">index.htm</a></li>
+        </ul>
+        <div class="tab-content">
+            <pre class="tab-pane active" id="ex3_App">
+require(["knockout", "App/AppViewModel", "domReady!"], function (ko, AppViewModel) {
+
+    ko.applyBindings(new AppViewModel());
+
+});</pre>
+            <pre class="tab-pane" id="ex3_AppViewModel">
+define(["knockout", "App/HelloWorldWidget/Widget"], function (ko, HelloWorldWidget) {
+
+    return function AppViewModel() {
+        this.helloWorld = ko.observable(new HelloWorldWidget());
+    };
+
+});</pre>
+            <pre class="tab-pane" id="ex3_AppView">
+&lt;html>
+&lt;head>
+    &lt;!-- Script registration is omitted -->
+&lt;/head>
+&lt;body>
+    &lt;section data-bind="inject: helloWorld">
+    &lt;/section>
+&lt;/body>
+&lt;/html></pre>
+        </div>
+        <!--    <h3>
+            Composition</h3>-->
     </div>
     <a style="position: absolute; top: 0; right: 0; z-index: 2000; }" href="https://github.com/gaevoy/ko.widget">
         <img src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" />
