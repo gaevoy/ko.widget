@@ -64,9 +64,11 @@
             See Hello World example:
         </p>
         <ul class="nav nav-tabs">
-            <li class="active"><a href="#ex1_View" data-toggle="tab">View.htm</a></li>
-            <li><a href="#ex1_ViewModel" data-toggle="tab">ViewModel.js</a></li>
+            <li class="active"><a href="#ex1_View" data-toggle="tab">HelloWorldView.htm</a></li>
+            <li><a href="#ex1_ViewModel" data-toggle="tab">HelloWorldViewModel.js</a></li>
             <li><a href="#ex1_Widget" data-toggle="tab">HelloWorldWidget.js</a></li>
+            <li><a href="https://github.com/gaevoy/ko.widget/tree/gh-pages/demo/ver_2.0/App/HelloWorldWidget"
+                target="_blank"><i class="glyphicon glyphicon-link"></i>&nbsp;Source code</a></li>
         </ul>
         <div class="tab-content">
             <pre class="tab-pane active" id="ex1_View">
@@ -78,13 +80,13 @@
             <pre class="tab-pane" id="ex1_ViewModel">
 define(["knockout"], function (ko) {
 
-    return function ViewModel() {
+    return function HelloWorldViewModel() {
         this.title = ko.observable("Hello World");
     };
 
 });</pre>
             <pre class="tab-pane" id="ex1_Widget">
-define(["ko.widget", "./ViewModel", "text!./View.htm"], function (Widget, ViewModel, View) {
+define(["ko.widget", "./HelloWorldViewModel", "text!./HelloWorldView.htm"], function (Widget, ViewModel, View) {
 
     return function HelloWorldWidget() {
         Widget.extend(this, [new ViewModel(), View]);
@@ -104,11 +106,15 @@ define(["ko.widget", "./ViewModel", "text!./View.htm"], function (Widget, ViewMo
         <h5>
             1. Calling <i>appendTo(element)</i> widget's method</h5>
         <ul class="nav nav-tabs">
-            <li class="active"><a href="#ex2_App" data-toggle="tab">App.js</a></li>
+            <li class="active"><a href="#ex2_App" data-toggle="tab">start.js</a></li>
+            <li><a href="https://github.com/gaevoy/ko.widget/tree/gh-pages/demo/ver_2.0/Examples/appendTo/"
+                target="_blank"><i class="glyphicon glyphicon-link"></i>&nbsp;Source code</a></li>
+            <li><a href="demo/ver_2.0/Examples/appendTo/" target="_blank"><i class="glyphicon glyphicon-play">
+            </i>&nbsp;Run</a></li>
         </ul>
         <div class="tab-content">
             <pre class="tab-pane active" id="ex2_App">
-require(["jquery", "App/HelloWorldWidget/Widget", "domReady!"], function ($, HelloWorldWidget) {
+require(["jquery", "App/HelloWorldWidget/HelloWorldWidget", "domReady!"], function ($, HelloWorldWidget) {
 
     var app = new HelloWorldWidget();
     app.appendTo($("body"));
@@ -118,19 +124,23 @@ require(["jquery", "App/HelloWorldWidget/Widget", "domReady!"], function ($, Hel
         <h5>
             2. Using <i>inject</i> binding</h5>
         <ul class="nav nav-tabs">
-            <li class="active"><a href="#ex3_App" data-toggle="tab">App.js</a></li>
+            <li class="active"><a href="#ex3_App" data-toggle="tab">start.js</a></li>
             <li><a href="#ex3_AppViewModel" data-toggle="tab">AppViewModel.js</a></li>
             <li><a href="#ex3_AppView" data-toggle="tab">index.htm</a></li>
+            <li><a href="https://github.com/gaevoy/ko.widget/tree/gh-pages/demo/ver_2.0/Examples/inject/"
+                target="_blank"><i class="glyphicon glyphicon-link"></i>&nbsp;Source code</a></li>
+            <li><a href="demo/ver_2.0/Examples/inject/" target="_blank"><i class="glyphicon glyphicon-play">
+            </i>&nbsp;Run</a></li>
         </ul>
         <div class="tab-content">
             <pre class="tab-pane active" id="ex3_App">
-require(["knockout", "App/AppViewModel", "domReady!"], function (ko, AppViewModel) {
+require(["knockout", "AppViewModel", "domReady!"], function (ko, AppViewModel) {
 
     ko.applyBindings(new AppViewModel());
 
 });</pre>
             <pre class="tab-pane" id="ex3_AppViewModel">
-define(["knockout", "App/HelloWorldWidget/Widget"], function (ko, HelloWorldWidget) {
+define(["knockout", "App/HelloWorldWidget/HelloWorldWidget"], function (ko, HelloWorldWidget) {
 
     return function AppViewModel() {
         this.helloWorld = ko.observable(new HelloWorldWidget());
@@ -142,9 +152,7 @@ define(["knockout", "App/HelloWorldWidget/Widget"], function (ko, HelloWorldWidg
 &lt;head>
     &lt;!-- Script registration is omitted -->
 &lt;/head>
-&lt;body>
-    &lt;section data-bind="inject: helloWorld">
-    &lt;/section>
+&lt;body data-bind="inject: helloWorld">
 &lt;/body>
 &lt;/html></pre>
         </div>
@@ -168,6 +176,6 @@ define(["knockout", "App/HelloWorldWidget/Widget"], function (ko, HelloWorldWidg
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
 
-</script>
+    </script>
 </body>
 </html>
