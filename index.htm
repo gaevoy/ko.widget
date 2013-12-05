@@ -38,21 +38,11 @@
             Overview</h3>
         <p>
             Big amount of rich UI functionality is always become difficult. <a href="http://stackoverflow.com/questions/933723/what-is-component-driven-development">
-                Component Driven Development</a> is aimed to manage code complexity. <a href="http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod">
-                    There are principles</a> how to make components by <a href="http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod">
-                        Uncle Bob</a>:
+                Component Driven Development</a> is aimed to manage code complexity.
         </p>
-        <ul>
-            <li>REP - The Release Reuse Equivalency Principle</li>
-            <li>CCP - The Common Closure Principle</li>
-            <li>CRP - The Common Reuse Principle</li>
-            <li>ADP - The Acyclic Dependencies Principle</li>
-            <li>SDP - The Stable Dependencies Principle</li>
-            <li>SAP - The Stable Abstractions Principle</li>
-        </ul>
         <p>
-            ko.widget is JavaScript library which resolve code complexity during building rich
-            UI in <a href="http://stackoverflow.com/questions/933723/what-is-component-driven-development">
+            <i>ko.widget</i> is JavaScript library which resolve code complexity during building
+            rich UI in <a href="http://stackoverflow.com/questions/933723/what-is-component-driven-development">
                 Component Driven Development</a> way. It depends on KnockoutJS and RequireJS.
         </p>
         <h3>
@@ -60,8 +50,8 @@
         <h4>
             Creating Widget</h4>
         <p>
-            To make ko.widget working your View and ViewModel should be wrapped in Widget class.
-            See Hello World example:
+            To make <i>ko.widget</i> working your View and ViewModel should be wrapped in Widget
+            class. See Hello World example:
         </p>
         <ul class="nav nav-tabs">
             <li class="active"><a href="#ex1_View" data-toggle="tab">HelloWorldView.htm</a></li>
@@ -73,7 +63,7 @@
         <div class="tab-content">
             <pre class="tab-pane active" id="ex1_View">
 &lt;div>
-    &lt;h1>Example 1&lt;/h1>
+    &lt;h1>Hello World Widget&lt;/h1>
     &lt;div data-bind="text: title">&lt;/div>
 &lt;/div>
 </pre>
@@ -156,8 +146,142 @@ define(["knockout", "App/HelloWorldWidget/HelloWorldWidget"], function (ko, Hell
 &lt;/body>
 &lt;/html></pre>
         </div>
-        <!--    <h3>
-            Composition</h3>-->
+        <h3>
+            Composition</h3>
+        <p>
+            To simplify code a developer should split UI functionality into small pieces then
+            compose them. <i>ko.widget</i> gives this possibility, each widget can contain nested
+            widgets. Technically composition implemented by using <i>inject</i> binding inside
+            the widget.
+        </p>
+        <p>
+            Example below shows how can <i>HelloWorldWidget</i> be used inside <i>HelloCompositeWidget</i>.
+        </p>
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#ex4_HelloCompositeView" data-toggle="tab">HelloCompositeView.htm</a></li>
+            <li><a href="#ex4_HelloCompositeViewModel" data-toggle="tab">HelloCompositeViewModel.js</a></li>
+            <li><a href="#ex4_HelloCompositeWidget" data-toggle="tab">HelloCompositeWidget.js</a></li>
+            <li><a href="https://github.com/gaevoy/ko.widget/tree/gh-pages/demo/ver_2.0/App/HelloCompositeWidget/"
+                target="_blank"><i class="glyphicon glyphicon-link"></i>&nbsp;Source code</a></li>
+            <li><a href="demo/ver_2.0/Examples/composition/" target="_blank"><i class="glyphicon glyphicon-play">
+            </i>&nbsp;Run</a></li>
+        </ul>
+        <div class="tab-content">
+            <pre class="tab-pane active" id="ex4_HelloCompositeView">
+&lt;div>
+    &lt;h1>Hello Composite Example&lt;/h1>
+    &lt;div data-bind="text: title">&lt;/div>
+    &lt;div data-bind="inject: helloWorld">&lt;/div>
+    &lt;h1>Bye Composite Example&lt;/h1>
+&lt;/div>
+</pre>
+            <pre class="tab-pane" id="ex4_HelloCompositeViewModel">
+define(["knockout", "App/HelloWorldWidget/HelloWorldWidget"], function (ko, HelloWorldWidget) {
+
+    return function HelloCompositeViewModel() {
+        this.helloWorld = ko.observable(new HelloWorldWidget());
+        this.title = ko.observable("Hello Composite");
+    };
+
+});</pre>
+            <pre class="tab-pane" id="ex4_HelloCompositeWidget">
+define(["ko.widget", "./HelloCompositeViewModel", "text!./HelloCompositeView.htm"], function (Widget, ViewModel, View) {
+
+    return function HelloCompositeWidget() {
+        Widget.extend(this, [new ViewModel(), View]);
+    };
+
+});</pre>
+            <h3>
+                Isolation</h3>
+            <p>
+                By default widget is strongly isolated. ViewModel and View cannot be reached from
+                outside, View context variable <i>$root</i> point in widget's ViewModel.
+            </p>
+            <p>
+                Any ViewModel's method can be shared for outside call, use widget's <i>exportMethods</i>
+                for this. Note: <i>init</i> and <i>dispose</i> methods of ViewModel are exported
+                by default.
+            </p>
+            <pre>
+define(["ko.widget", "./PanelViewModel", "text!./PanelView.htm"], function (Widget, ViewModel, View) {
+
+    return function HelloCompositeWidget() {
+        Widget.extend(this, [new ViewModel(), View]);
+
+        this.exportMethods("show", "hide", "visible");
+    };
+
+});</pre>
+        </div>
+        <h3>
+            Panels and Windows</h3>
+        <p>
+            <i>Panel</i> or <i>Window</i> are regular widget. Only one difference is absolute
+            positioning View. There is may be a problem when widget injected in the element
+            with relative positioning and z-index specified. <i>windowInject</i> binding solves
+            this problem, it appends specified widget to the document body. <i>windowInject</i>
+            and <i>inject</i> bindings are equivalent and fully substitutable.
+        </p>
+        <h3>
+            Single Page Application</h3>
+        <p>
+            <i>Page</i> are again regular widget. Single Page Application consist of widgets
+            only, in term of ko.widget, there is no anything new and special.
+        </p>
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#ex5_start" data-toggle="tab">start.js</a></li>
+            <li><a href="#ex5_AppViewModel" data-toggle="tab">AppViewModel.js</a></li>
+            <li><a href="#ex5_index" data-toggle="tab">index.htm</a></li>
+            <li><a href="https://github.com/gaevoy/ko.widget/tree/gh-pages/demo/ver_2.0/Examples/spa/"
+                target="_blank"><i class="glyphicon glyphicon-link"></i>&nbsp;Source code</a></li>
+            <li><a href="demo/ver_2.0/Examples/spa/" target="_blank"><i class="glyphicon glyphicon-play">
+            </i>&nbsp;Run</a></li>
+        </ul>
+        <div class="tab-content">
+            <pre class="tab-pane active" id="ex5_start">
+require(["knockout", "AppViewModel", "domReady!"], function (ko, AppViewModel) {
+
+    var app = new AppViewModel();
+    app.init();
+    ko.applyBindings(app);
+
+});</pre>
+            <pre class="tab-pane" id="ex5_AppViewModel">
+define(["knockout", "simrou", "App/HelloWorldWidget/HelloWorldWidget", "App/HelloCompositeWidget/HelloCompositeWidget"], function (ko, Simrou, HelloWorldWidget, HelloCompositeWidget) {
+
+    return function AppViewModel() {
+        var self = this;
+        this.page = ko.observable(null);
+
+        this.init = function () {
+            var router = new Simrou({
+                '/hello-world': function () { self.page(new HelloWorldWidget()) },
+                '/hello-composite': function () { self.page(new HelloCompositeWidget()) }
+            });
+            router.start('/hello-world');
+        };
+    };
+
+});</pre>
+            <pre class="tab-pane" id="ex5_index">
+&lt;html>
+&lt;head>
+    &lt;!-- Script registration is omitted -->
+&lt;/head>
+&lt;body>
+    &lt;header>Header | &lt;a href="#/hello-world">Page 1&lt;/a> | &lt;a href="#/hello-composite">Page 2&lt;/a>&lt;/header>
+    &lt;section data-bind="inject: page, injectAnimation: 'fadeIn'">&lt;/section>
+    &lt;footer>Footer&lt;/footer>
+&lt;/body>
+&lt;/html></pre>
+        </div>
+        <p>
+            <a href="https://github.com/buero-fuer-ideen/Simrou">Simrou</a> used for routing
+            ability. It allows capture query parameters and then they can be pass into page
+            widget through <i>init</i> method call. <i>injectAnimation</i> binding adds animation
+            during page transition.
+        </p>
     </div>
     <a style="position: absolute; top: 0; right: 0; z-index: 2000; }" href="https://github.com/gaevoy/ko.widget">
         <img src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" />
