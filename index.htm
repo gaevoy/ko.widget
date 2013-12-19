@@ -43,7 +43,8 @@
         <p>
             <i>ko.widget</i> is JavaScript library which resolve code complexity during building
             rich UI in <a href="http://stackoverflow.com/questions/933723/what-is-component-driven-development">
-                Component Driven Development</a> way. It depends on KnockoutJS and RequireJS.
+                Component Driven Development</a> way. It depends on KnockoutJS, RequireJS and
+            jQuery.
         </p>
         <h3>
             How To Use</h3>
@@ -217,17 +218,17 @@ define(["ko.widget", "./PanelViewModel", "text!./PanelView.htm"], function (Widg
         <h3>
             Panels and Windows</h3>
         <p>
-            <i>Panel</i> or <i>Window</i> is usual widget. Only one difference is absolute
-            positioning View. There is may be a problem when widget injected in the element
-            with relative positioning and z-index specified. <i>windowInject</i> binding solves
-            this problem, it appends specified widget to the document body. <i>windowInject</i>
-            and <i>inject</i> bindings are equivalent and fully substitutable.
+            <i>Panel</i> or <i>Window</i> is usual widget. Only one difference is absolute positioning
+            View. There is may be a problem when widget injected in the element with relative
+            positioning and z-index specified. <i>windowInject</i> binding solves this problem,
+            it appends specified widget to the document body. <i>windowInject</i> and <i>inject</i>
+            bindings are equivalent and fully substitutable.
         </p>
         <h3>
             Single Page Application</h3>
         <p>
-            <i>Page</i> is again usual widget. Single Page Application consist of widgets
-            only, in term of ko.widget, there is no anything new and special.
+            <i>Page</i> is again usual widget. Single Page Application consist of widgets only,
+            in term of ko.widget, there is no anything new and special.
         </p>
         <ul class="nav nav-tabs">
             <li class="active"><a href="#ex5_start" data-toggle="tab">start.js</a></li>
@@ -282,9 +283,17 @@ define(["knockout", "simrou", "App/HelloWorldWidget/HelloWorldWidget", "App/Hell
             widget through <i>init</i> method call. <i>injectAnimation</i> binding adds animation
             during page transition.
         </p>
+        <h3>
+            Unit test cover</h3>
+        <p>
+            Here you can <a href="demo/ver_2.0/Examples/tests/" target="_blank"><i class="glyphicon glyphicon-play">
+            </i>&nbsp;Run</a> unit tests and see <a href="https://github.com/gaevoy/ko.widget/tree/master/tests/"
+                target="_blank"><i class="glyphicon glyphicon-link"></i>&nbsp;Source code</a> to find out more use cases.
+        </p>
     </div>
     <a style="position: absolute; top: 0; right: 0; z-index: 2000; }" href="https://github.com/gaevoy/ko.widget">
-        <img src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub" />
+        <img src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"
+            alt="Fork me on GitHub" />
     </a>
     <script src="assets/jquery.min.js"></script>
     <script src="assets/bootstrap.min.js"></script>

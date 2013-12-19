@@ -82,6 +82,7 @@
     <Content Include="demo\ver_2.0\Examples\spa\boot.js" />
     <Content Include="demo\ver_2.0\Examples\spa\index.htm" />
     <Content Include="demo\ver_2.0\Examples\spa\start.js" />
+    <Content Include="demo\ver_2.0\Examples\tests\index.htm" />
     <Content Include="demo\ver_2.0\Libs\ko.widget.js" />
     <Content Include="index.htm" />
     <Content Include="Web.config" />
