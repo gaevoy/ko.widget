@@ -17,30 +17,27 @@
             }
         };
         this.init = function () {
-            if (viewModel && viewModel.init) {
+            if (viewModel.init)
                 return viewModel.init.apply(viewModel, arguments);
-            }
         };
         this.appendTo = function (elementToAppend) {
             element = elementToAppend;
-            setDebugInformation();
             var viewElement = $(view);
             element.append(viewElement);
             if (viewModel == null) {
                 throw new Error("Widget can not be attached because of viewModel is null");
             }
             ko.applyBindings(viewModel, viewElement[0]);
+            if (viewModel.bound) viewModel.bound();
         };
         this.dispose = function () {
-            if (viewModel && viewModel.dispose) {
-                viewModel.dispose();
-            }
             if (element && element[0]) {
+                if (viewModel.unbound) viewModel.unbound();
+                if (viewModel.dispose) viewModel.dispose();
                 ko.cleanNode(element[0]);
                 element = null;
             }
         };
-
         this.settings = function (object) {
             if (!!!object) return;
             for (var key in object) {
@@ -57,24 +54,6 @@
                 }
             }
         };
-        function getFunctionName(func) {
-            if (func.name) {
-                return func.name;
-            }
-            var definition = func.toString().split("\n")[0];
-            var exp = /^function ([^\s(]+).+/;
-            if (exp.test(definition)) {
-                return definition.split("\n")[0].replace(exp, "$1") || null;
-            } else {
-                return null;
-            }
-        }
-        function setDebugInformation() {
-            var widgetName = getFunctionName(self.constructor) || "unknown";
-            if (widgetName != null && element) {
-                element.attr("data-widget", widgetName);
-            }
-        }
     };
 
     Widget.extend = function (derivedInstance, args) {

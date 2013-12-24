@@ -70,9 +70,86 @@
         equal(el2.html(), '<i data-bind="text: title">knockout3</i>');
     });
 
+    test("Widget should call bound method after it has been appended", function () {
+        // Given
+        var widget = new BoundUnboundTestWidget();
+        var vm = widget.viewModel();
+        vm.noOfBound = 0;
+        vm.noOfUnbound = 0;
+        vm.noOfDispose = 0;
+
+        // When
+        widget.appendTo(createDiv());
+
+        // Then
+        equal(vm.noOfBound, 1);
+        equal(vm.noOfUnbound, 0);
+        equal(vm.noOfDispose, 0);
+    });
+
+    test("Widget should call unbound method after it has been disposed", function () {
+        // Given
+        var widget = new BoundUnboundTestWidget();
+        widget.appendTo(createDiv());
+        var vm = widget.viewModel();
+        vm.noOfBound = 0;
+        vm.noOfUnbound = 0;
+        vm.noOfDispose = 0;
+
+        // When
+        widget.dispose();
+
+        // Then
+        equal(vm.noOfBound, 0);
+        equal(vm.noOfUnbound, 1);
+        equal(vm.noOfDispose, 1);
+    });
+    
+    test("Widget should call unbound method only once", function () {
+        // Given
+        var widget = new BoundUnboundTestWidget();
+        widget.appendTo(createDiv());
+        var vm = widget.viewModel();
+        vm.noOfUnbound = 0;
+        vm.noOfDispose = 0;
+
+        // When
+        widget.dispose();
+        widget.dispose();
+        widget.dispose();
+
+        // Then
+        equal(vm.noOfUnbound, 1);
+        equal(vm.noOfDispose, 1);
+    });
+
     function TestWidget(title) {
         ko.widget.extend(this, [{ title: ko.observable(title || "Test me") }, "<i data-bind='text: title'></i>"]);
         this.exportMethods("title");
+    }
+
+    function BoundUnboundViewModel() {
+        var self = this;
+        this.noOfBound = 0;
+        this.noOfUnbound = 0;
+        this.noOfDispose = 0;
+        this.bound = function () {
+            self.noOfBound++;
+        };
+        this.unbound = function () {
+            self.noOfUnbound++;
+        };
+        this.dispose = function () {
+            self.noOfDispose++;
+        };
+        this.viewModel = function () {
+            return self;
+        }
+    }
+
+    function BoundUnboundTestWidget() {
+        ko.widget.extend(this, [new BoundUnboundViewModel(), "<i></i>"]);
+        this.exportMethods("viewModel");
     }
 
     function createDiv() {

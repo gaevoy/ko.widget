@@ -73,7 +73,6 @@
     <Content Include="src\Widget.js" />
     <Content Include="src\WindowHost\WindowHostViewModel.js" />
     <Content Include="src\WindowHost\WindowHostWidget.js" />
-    <Content Include="src\WindowHost\WindowView.htm" />
     <Content Include="src\WindowHost\WindowViewModel.js" />
     <Content Include="tests\Default.htm" />
     <Content Include="tests\Widget.js" />

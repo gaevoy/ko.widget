@@ -18,30 +18,27 @@ define('Widget',["jquery", "knockout"], function ($, ko) {
             }
         };
         this.init = function () {
-            if (viewModel && viewModel.init) {
+            if (viewModel.init)
                 return viewModel.init.apply(viewModel, arguments);
-            }
         };
         this.appendTo = function (elementToAppend) {
             element = elementToAppend;
-            setDebugInformation();
             var viewElement = $(view);
             element.append(viewElement);
             if (viewModel == null) {
                 throw new Error("Widget can not be attached because of viewModel is null");
             }
             ko.applyBindings(viewModel, viewElement[0]);
+            if (viewModel.bound) viewModel.bound();
         };
         this.dispose = function () {
-            if (viewModel && viewModel.dispose) {
-                viewModel.dispose();
-            }
             if (element && element[0]) {
+                if (viewModel.unbound) viewModel.unbound();
+                if (viewModel.dispose) viewModel.dispose();
                 ko.cleanNode(element[0]);
                 element = null;
             }
         };
-
         this.settings = function (object) {
             if (!!!object) return;
             for (var key in object) {
@@ -58,24 +55,6 @@ define('Widget',["jquery", "knockout"], function ($, ko) {
                 }
             }
         };
-        function getFunctionName(func) {
-            if (func.name) {
-                return func.name;
-            }
-            var definition = func.toString().split("\n")[0];
-            var exp = /^function ([^\s(]+).+/;
-            if (exp.test(definition)) {
-                return definition.split("\n")[0].replace(exp, "$1") || null;
-            } else {
-                return null;
-            }
-        }
-        function setDebugInformation() {
-            var widgetName = getFunctionName(self.constructor) || "unknown";
-            if (widgetName != null && element) {
-                element.attr("data-widget", widgetName);
-            }
-        }
     };
 
     Widget.extend = function (derivedInstance, args) {
@@ -111,6 +90,7 @@ define('ko.bindings/inject',["jquery", "knockout"], function ($, ko) {
                 nextEl = $('<div class="widget"></div>');
                 nextEl.appendTo(containerEl);
                 current.appendTo(nextEl);
+                setDebugInformation(nextEl, current);
             }
 
             var prevEl = nextEl ? nextEl.prev() : containerEl.children().last();
@@ -132,7 +112,24 @@ define('ko.bindings/inject',["jquery", "knockout"], function ($, ko) {
                 current.dispose();
             }
         });
-    };
+    }
+    function getFunctionName(func) {
+        if (func.name) {
+            return func.name;
+        }
+        var definition = func.toString().split("\n")[0];
+        var exp = /^function ([^\s(]+).+/;
+        if (exp.test(definition)) {
+            return definition.split("\n")[0].replace(exp, "$1") || null;
+        } else {
+            return null;
+        }
+    }
+    function setDebugInformation($el, widget) {
+        if ($el) {
+            $el.attr("data-widget", getFunctionName(widget.constructor) || "unknown");
+        }
+    }
 
     return inject;
 
@@ -214,12 +211,10 @@ define('WindowHost/WindowHostViewModel',["knockout", "./WindowViewModel"], funct
     };
 });
 
-define('text!WindowHost/WindowView.htm',[],function () { return '<div class="window-host" data-bind="foreach: windows">\r\n    <div data-bind="inject: widget">\r\n    </div>\r\n</div>\r\n';});
-
-define('WindowHost/WindowHostWidget',["Widget", "WindowHost/WindowHostViewModel", "text!WindowHost/WindowView.htm"], function (Widget, WindowHostViewModel, WindowView) {
+define('WindowHost/WindowHostWidget',["Widget", "WindowHost/WindowHostViewModel"], function (Widget, WindowHostViewModel) {
 
     return function WindowHostWidget() {
-        Widget.extend(this, [new WindowHostViewModel, WindowView]);
+        Widget.extend(this, [new WindowHostViewModel, '<div class="window-host" data-bind="foreach: windows"><div data-bind="inject: widget"></div></div>']);
 
         this.exportMethods("update", "remove");
     };

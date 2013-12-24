@@ -24,6 +24,7 @@
                 nextEl = $('<div class="widget"></div>');
                 nextEl.appendTo(containerEl);
                 current.appendTo(nextEl);
+                setDebugInformation(nextEl, current);
             }
 
             var prevEl = nextEl ? nextEl.prev() : containerEl.children().last();
@@ -45,7 +46,24 @@
                 current.dispose();
             }
         });
-    };
+    }
+    function getFunctionName(func) {
+        if (func.name) {
+            return func.name;
+        }
+        var definition = func.toString().split("\n")[0];
+        var exp = /^function ([^\s(]+).+/;
+        if (exp.test(definition)) {
+            return definition.split("\n")[0].replace(exp, "$1") || null;
+        } else {
+            return null;
+        }
+    }
+    function setDebugInformation($el, widget) {
+        if ($el) {
+            $el.attr("data-widget", getFunctionName(widget.constructor) || "unknown");
+        }
+    }
 
     return inject;
 
