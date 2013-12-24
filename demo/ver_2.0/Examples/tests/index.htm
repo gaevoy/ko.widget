@@ -19,7 +19,8 @@
                 "text": "http://cdnjs.cloudflare.com/ajax/libs/require-text/2.0.10/text.min",
                 "WidgetTest": testsBase + "Widget",
                 "injectTest": testsBase + "ko.bindings/inject"
-            }
+            },
+            urlArgs: "v=" + Math.random()
         });
         require(["WidgetTest", "injectTest"], QUnit.start);
     </script>
