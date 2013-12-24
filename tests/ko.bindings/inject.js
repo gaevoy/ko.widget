@@ -72,18 +72,19 @@
         equal(widget.noOfDisposes, 1);
     });
 
-    test("inject should add debug info for container element", function () {
-        // Given
-        var el = createEl('<div data-bind="inject: widget"></div>');
-        var viewModel = { widget: ko.observable(null) };
-        ko.applyBindings(viewModel, el);
+    if (!$.browser.msie)
+        test("inject should add debug info for container element", function () {
+            // Given
+            var el = createEl('<div data-bind="inject: widget"></div>');
+            var viewModel = { widget: ko.observable(null) };
+            ko.applyBindings(viewModel, el);
 
-        // When
-        viewModel.widget(new WidgetMock());
+            // When
+            viewModel.widget(new WidgetMock());
 
-        // Then
-        equal($(el).children(0).data("widget"), "WidgetMock");
-    });
+            // Then
+            equal($(el).children(0).data("widget"), "WidgetMock");
+        });
 
     function WidgetMock() {
         var self = this;
