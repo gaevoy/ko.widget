@@ -61,6 +61,8 @@
     <Content Include="lib\jquery-1.8.2.js" />
     <Content Include="lib\knockout-2.3.0.debug.js" />
     <Content Include="src\ko.bindings\injectAnimation.js" />
+    <Content Include="src\registerBinding.js" />
+    <Content Include="src\widgetFor.js" />
     <Content Include="tests\ko.bindings\inject.js" />
     <Content Include="tests\lib\qunit.css" />
     <Content Include="tests\lib\qunit.js" />
@@ -75,6 +77,7 @@
     <Content Include="src\WindowHost\WindowHostWidget.js" />
     <Content Include="src\WindowHost\WindowViewModel.js" />
     <Content Include="tests\Default.htm" />
+    <Content Include="tests\registerBinding.js" />
     <Content Include="tests\Widget.js" />
     <Content Include="Web.config" />
   </ItemGroup>

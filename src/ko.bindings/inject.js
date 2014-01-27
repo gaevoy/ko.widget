@@ -1,4 +1,4 @@
-﻿define(["jquery", "knockout"], function ($, ko) {
+﻿define(["jquery", "knockout", "../widgetFor"], function ($, ko, widgetFor) {
 
     // inject: widgetToInject
     ko.bindingHandlers['inject'] = {
@@ -26,6 +26,7 @@
                 current.appendTo(nextEl);
                 setDebugInformation(nextEl, current);
             }
+            widgetFor(element, current);
 
             var prevEl = nextEl ? nextEl.prev() : containerEl.children().last();
             ko.bindingHandlers['inject']['transition'](prevEl, nextEl, containerEl);
@@ -45,6 +46,7 @@
             if (current) {
                 current.dispose();
             }
+            widgetFor(element, null);
         });
     }
     function getFunctionName(func) {

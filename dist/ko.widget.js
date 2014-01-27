@@ -64,7 +64,18 @@ define('Widget',["jquery", "knockout"], function ($, ko) {
 
     return Widget;
 });
-define('ko.bindings/inject',["jquery", "knockout"], function ($, ko) {
+define('widgetFor',["knockout"], function (ko) {
+
+    var widgetForDomDataKey = "__ko_widget__";
+    return function widgetFor(element, value) {
+        if (arguments.length == 2)
+            ko.utils.domData.set(element, widgetForDomDataKey, value);
+        else
+            return ko.utils.domData.get(element, widgetForDomDataKey);
+    };
+
+});
+define('ko.bindings/inject',["jquery", "knockout", "../widgetFor"], function ($, ko, widgetFor) {
 
     // inject: widgetToInject
     ko.bindingHandlers['inject'] = {
@@ -92,6 +103,7 @@ define('ko.bindings/inject',["jquery", "knockout"], function ($, ko) {
                 current.appendTo(nextEl);
                 setDebugInformation(nextEl, current);
             }
+            widgetFor(element, current);
 
             var prevEl = nextEl ? nextEl.prev() : containerEl.children().last();
             ko.bindingHandlers['inject']['transition'](prevEl, nextEl, containerEl);
@@ -111,6 +123,7 @@ define('ko.bindings/inject',["jquery", "knockout"], function ($, ko) {
             if (current) {
                 current.dispose();
             }
+            widgetFor(element, null);
         });
     }
     function getFunctionName(func) {
@@ -132,42 +145,6 @@ define('ko.bindings/inject',["jquery", "knockout"], function ($, ko) {
     }
 
     return inject;
-
-});
-
-define('ko.bindings/injectAnimation',["jquery", "knockout", "./inject"], function ($, ko) {
-
-    // inject: widgetToInject
-    ko.bindingHandlers['injectAnimation'] = {
-        'update': function (element, valueAccessor) {
-            $(element).data("injectAnimation", ko.unwrap(valueAccessor()));
-        },
-        'animations': {
-            'none': function (prevElement, nextElement) {
-                if (prevElement) {
-                    prevElement.remove();
-                }
-            },
-            'fadeIn': function (prevElement, nextElement) {
-                if (prevElement) {
-                    prevElement.remove();
-                }
-                if (prevElement && nextElement) {
-                    nextElement.hide().fadeIn();
-                }
-            }
-        }
-    };
-
-    ko.bindingHandlers['inject']['transition'] = function (prevElement, nextElement, containerElement) {
-        var injectAnimation = containerElement.data("injectAnimation");
-        if (injectAnimation) {
-            var transition = ko.bindingHandlers['injectAnimation']['animations'][injectAnimation];
-            if (transition) {
-                transition(prevElement, nextElement);
-            }
-        }
-    };
 
 });
 
@@ -220,29 +197,12 @@ define('WindowHost/WindowHostWidget',["Widget", "WindowHost/WindowHostViewModel"
     };
 
 });
-define('ko.bindings/windowInject',["jquery", "knockout", "WindowHost/WindowHostWidget"], function ($, ko, WindowHostWidget) {
+define('ko.bindings/windowInject',["jquery", "knockout", "WindowHost/WindowHostWidget", "../widgetFor"], function ($, ko, WindowHostWidget, widgetFor) {
 
     // windowInject: widgetToInject
     ko.bindingHandlers['windowInject'] = {
         'init': function (element, valueAccessor) {
-            var windowId = id++;
-            var widgetField = valueAccessor();
-
-            ko.computed({
-                read: function () {
-                    var widget = ko.unwrap(widgetField);
-
-                    ko.dependencyDetection.ignore(function () {
-                        windowHost().update(windowId, widget);
-                    });
-                },
-                disposeWhenNodeIsRemoved: element
-            });
-
-            ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
-                windowHost().remove(windowId);
-            });
-
+            windowInject(element, valueAccessor());
             return { controlsDescendantBindings: true };
         }
     };
@@ -258,12 +218,109 @@ define('ko.bindings/windowInject',["jquery", "knockout", "WindowHost/WindowHostW
         return windowHostSingleton;
     }
 
+    function windowInject(element, observableWidget) {
+        var windowId = id++;
+        ko.computed({
+            read: function () {
+                var widget = ko.unwrap(observableWidget);
+
+                ko.dependencyDetection.ignore(function () {
+                    windowHost().update(windowId, widget);
+                    widgetFor(element, widget);
+                });
+            },
+            disposeWhenNodeIsRemoved: element
+        });
+
+        ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
+            windowHost().remove(windowId);
+            widgetFor(element, null);
+        });
+    }
+
+    return windowInject;
+
 });
 
-define('ko.widget',["knockout", "Widget", "ko.bindings/inject", "ko.bindings/injectAnimation", "ko.bindings/windowInject"], function (ko, Widget, inject) {
+define('registerBinding',["jquery", "knockout", "ko.bindings/inject", "ko.bindings/windowInject", "widgetFor"], function ($, ko, inject, windowInject, widgetFor) {
+
+    return function registerBinding(Widget, bindingName, handlers) {
+        if (ko.bindingHandlers[bindingName]) {
+            throw new Error("Binding conflict. Binding '" + bindingName + "' is already exist");
+        }
+
+        ko.bindingHandlers[bindingName] = {
+            'init': function (element, valueAccessor) {
+
+                var widget = new Widget();
+                if (handlers && handlers.windowInject == true) {
+                    windowInject(element, widget);
+                } else {
+                    inject(element, widget);
+                }
+
+                if (handlers && handlers.init) {
+                    handlers.init(widget, valueAccessor);
+                }
+
+                return { controlsDescendantBindings: true };
+            },
+            'update': function (element, valueAccessor) {
+                var widget = widgetFor(element);
+                if (handlers && handlers.update) {
+                    handlers.update(widget, valueAccessor);
+                }
+                if (!(handlers && (handlers.init || handlers.update))) {
+                    widget.init(ko.unwrap(valueAccessor()));
+                }
+            }
+        };
+
+    }
+});
+define('ko.bindings/injectAnimation',["jquery", "knockout", "./inject"], function ($, ko) {
+
+    // inject: widgetToInject
+    ko.bindingHandlers['injectAnimation'] = {
+        'update': function (element, valueAccessor) {
+            $(element).data("injectAnimation", ko.unwrap(valueAccessor()));
+        },
+        'animations': {
+            'none': function (prevElement, nextElement) {
+                if (prevElement) {
+                    prevElement.remove();
+                }
+            },
+            'fadeIn': function (prevElement, nextElement) {
+                if (prevElement) {
+                    prevElement.remove();
+                }
+                if (prevElement && nextElement) {
+                    nextElement.hide().fadeIn();
+                }
+            }
+        }
+    };
+
+    ko.bindingHandlers['inject']['transition'] = function (prevElement, nextElement, containerElement) {
+        var injectAnimation = containerElement.data("injectAnimation");
+        if (injectAnimation) {
+            var transition = ko.bindingHandlers['injectAnimation']['animations'][injectAnimation];
+            if (transition) {
+                transition(prevElement, nextElement);
+            }
+        }
+    };
+
+});
+
+define('ko.widget',["knockout", "Widget", "ko.bindings/inject", "ko.bindings/windowInject", "registerBinding", "widgetFor", "ko.bindings/injectAnimation"], function (ko, Widget, inject, windowInject, registerBinding, widgetFor) {
 
     Widget.inject = inject;
+    Widget.windowInject = windowInject;
+    Widget.registerBinding = registerBinding;
     ko.Widget = ko.widget = Widget;
-    
+    ko.widgetFor = widgetFor;
+
     return Widget;
 });

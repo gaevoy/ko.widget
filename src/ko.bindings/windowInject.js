@@ -1,26 +1,9 @@
-﻿define(["jquery", "knockout", "WindowHost/WindowHostWidget"], function ($, ko, WindowHostWidget) {
+﻿define(["jquery", "knockout", "WindowHost/WindowHostWidget", "../widgetFor"], function ($, ko, WindowHostWidget, widgetFor) {
 
     // windowInject: widgetToInject
     ko.bindingHandlers['windowInject'] = {
         'init': function (element, valueAccessor) {
-            var windowId = id++;
-            var widgetField = valueAccessor();
-
-            ko.computed({
-                read: function () {
-                    var widget = ko.unwrap(widgetField);
-
-                    ko.dependencyDetection.ignore(function () {
-                        windowHost().update(windowId, widget);
-                    });
-                },
-                disposeWhenNodeIsRemoved: element
-            });
-
-            ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
-                windowHost().remove(windowId);
-            });
-
+            windowInject(element, valueAccessor());
             return { controlsDescendantBindings: true };
         }
     };
@@ -35,5 +18,27 @@
         }
         return windowHostSingleton;
     }
+
+    function windowInject(element, observableWidget) {
+        var windowId = id++;
+        ko.computed({
+            read: function () {
+                var widget = ko.unwrap(observableWidget);
+
+                ko.dependencyDetection.ignore(function () {
+                    windowHost().update(windowId, widget);
+                    widgetFor(element, widget);
+                });
+            },
+            disposeWhenNodeIsRemoved: element
+        });
+
+        ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
+            windowHost().remove(windowId);
+            widgetFor(element, null);
+        });
+    }
+
+    return windowInject;
 
 });
