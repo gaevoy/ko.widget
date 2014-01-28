@@ -13,7 +13,7 @@
         delete ko.bindingHandlers["test"];
     });
 
-    test("When widget as binding field changes should be promoted on init method call", function () {
+    test("When widget as binding field changed, this should be promoted on init method call", function () {
         // Given
         ko.widget.registerBinding(TestWidget, "test");
 
@@ -26,16 +26,33 @@
         delete ko.bindingHandlers["test"];
     });
 
+    test("When widget as binding options changed, this should be promoted on init method call", function () {
+        // Given
+        ko.widget.registerBinding(TestWidget, "test");
+
+        // When
+        var el = createEl('<div data-bind="test: { text1: text, text2: text(), nested: nested}"></div>');
+        ko.applyBindings({ text: ko.observable("TxT"), nested: ko.observable({ field: ko.observable(123) }) }, el);
+
+        // Then
+        var widget = ko.widgetFor(el);
+        equal(JSON.stringify(widget.initArguments().length), 1);
+        equal(JSON.stringify(widget.initArguments()[0]), JSON.stringify({ text1: "TxT", text2: "TxT", nested: { field: 123 } }));
+        delete ko.bindingHandlers["test"];
+    });
+
     function TestWidget() {
         ko.widget.extend(this, [new TestViewModel(), "<i data-bind='text: title'></i>"]);
-        this.exportMethods("title");
+        this.exportMethods("title", "initArguments");
     }
 
     function TestViewModel() {
         var self = this;
+        this.initArguments = ko.observable(null);
         this.title = ko.observable("Test me");
         this.init = function (title) {
             self.title(title);
+            self.initArguments(arguments);
         };
     }
 

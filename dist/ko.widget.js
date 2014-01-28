@@ -251,14 +251,12 @@ define('registerBinding',["jquery", "knockout", "ko.bindings/inject", "ko.bindin
 
         ko.bindingHandlers[bindingName] = {
             'init': function (element, valueAccessor) {
-
                 var widget = new Widget();
                 if (handlers && handlers.windowInject == true) {
                     windowInject(element, widget);
                 } else {
                     inject(element, widget);
                 }
-
                 if (handlers && handlers.init) {
                     handlers.init(widget, valueAccessor);
                 }
@@ -271,7 +269,11 @@ define('registerBinding',["jquery", "knockout", "ko.bindings/inject", "ko.bindin
                     handlers.update(widget, valueAccessor);
                 }
                 if (!(handlers && (handlers.init || handlers.update))) {
-                    widget.init(ko.unwrap(valueAccessor()));
+                    var options = ko.toJS(valueAccessor());
+
+                    ko.dependencyDetection.ignore(function () {
+                        widget.init(options);
+                    });
                 }
             }
         };
