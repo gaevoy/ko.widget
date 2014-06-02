@@ -259,7 +259,7 @@ ko.bindingHandlers['injectAnimation'] = {
         $(element).data("injectAnimation", ko.unwrap(valueAccessor()));
     },
     'animations': {
-        'none': function (prevElement, nextElement) {
+        'default': function (prevElement, nextElement) {
             if (prevElement) {
                 prevElement.remove();
             }
@@ -276,7 +276,7 @@ ko.bindingHandlers['injectAnimation'] = {
 };
 
 ko.bindingHandlers['inject']['transition'] = function (prevElement, nextElement, containerElement) {
-    var injectAnimation = containerElement.data("injectAnimation");
+    var injectAnimation = containerElement.data("injectAnimation") || "default";
     if (injectAnimation) {
         var transition = ko.bindingHandlers['injectAnimation']['animations'][injectAnimation];
         if (transition) {

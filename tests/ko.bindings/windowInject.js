@@ -72,6 +72,26 @@
         equal(widget.noOfDisposes, 1);
     });
 
+    test("windowInject should clear html when it becomes null", function () {
+        // Given
+        var el = createEl('<div data-bind="windowInject: widget"></div>');
+        function TextWidget() {
+            this.appendTo = function (el) {
+                el.text("Text 123");
+            };
+            this.dispose = function () { };
+        }
+        var viewModel = { widget: ko.observable(new TextWidget()) };
+        ko.applyBindings(viewModel, el);
+        var widgetEl = $(".window-host > div:last-child");
+
+        // When
+        viewModel.widget(null);
+
+        // Then
+        ok(widgetEl.is(":empty"));
+    });
+
     if (!$.browser.msie)
         test("windowInject should add debug info for container element", function () {
             // Given
@@ -87,7 +107,7 @@
             viewModel.widget(new NamedWidget123());
 
             // Then
-            var el = $(".window-host div:last-child");
+            var el = $(".window-host > div:last-child");
             equal($(el).children(0).data("widget"), "NamedWidget123");
         });
 

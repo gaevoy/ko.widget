@@ -72,6 +72,25 @@
         equal(widget.noOfDisposes, 1);
     });
 
+    test("inject should clear html when it becomes null", function () {
+        // Given
+        var el = createEl('<div data-bind="inject: widget"></div>');
+        function TextWidget() {
+            this.appendTo = function (el) {
+                el.text("Text 123");
+            };
+            this.dispose = function () { };
+        }
+        var viewModel = { widget: ko.observable(new TextWidget()) };
+        ko.applyBindings(viewModel, el);
+
+        // When
+        viewModel.widget(null);
+
+        // Then
+        ok($(el).is(":empty"));
+    });
+
     if (!$.browser.msie)
         test("inject should add debug info for container element", function () {
             // Given
