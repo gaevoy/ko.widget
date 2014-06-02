@@ -11,6 +11,7 @@
         var tests = [
             ns + "Widget",
             ns + "ko.bindings/inject",
+            ns + "ko.bindings/windowInject",
             ns + "registerBinding"
         ];
 
@@ -24,10 +25,15 @@
         });
         require(tests, QUnit.start);
     </script>
+    <style>
+        .sandbox, .window-host {
+            opacity: 0;
+        }
+    </style>
 </head>
 <body>
     <div id="qunit">
     </div>
-    <div class="sandbox" style="opacity: 0"></div>
+    <div class="sandbox"></div>
 </body>
 </html>
