@@ -1,3 +1,4 @@
 
 
+return ko.widget;
 }));

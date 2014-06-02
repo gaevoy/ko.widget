@@ -73,6 +73,7 @@
     <Content Include="src\ko.bindings\injectAnimation.js" />
     <Content Include="src\registerBinding.js" />
     <Content Include="src\widgetFor.js" />
+    <Content Include="tests\Default.no-amd.htm" />
     <Content Include="tests\ko.bindings\windowInject.js" />
     <Content Include="tests\ko.bindings\inject.js" />
     <Content Include="tests\lib\qunit.css" />

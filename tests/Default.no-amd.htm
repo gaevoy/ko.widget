@@ -1,0 +1,38 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>ko.widget tests</title>
+    <link href="lib/qunit.css" rel="stylesheet" type="text/css" />
+    <script src="lib/qunit.js" type="text/javascript"></script>
+    <script src="../lib/jquery-1.8.2.js" type="text/javascript"></script>
+    <script src="../lib/knockout-2.3.0.debug.js" type="text/javascript"></script>
+    <script src="../dist/ko.widget.js" type="text/javascript"></script>
+    <script src="../lib/require.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var ns = "../tests/";
+        var tests = [
+            ns + "Widget",
+            ns + "ko.bindings/inject",
+            ns + "ko.bindings/windowInject",
+            ns + "registerBinding"
+        ];
+
+        QUnit.config.autostart = false;
+        define("jquery", function() { return $; });
+        define("knockout", function () { return ko; });
+        define("ko.widget", function () { return ko.widget; });
+        require(tests, QUnit.start);
+    </script>
+    <style>
+        .sandbox, .window-host {
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="qunit">
+    </div>
+    <div class="sandbox"></div>
+</body>
+</html>
