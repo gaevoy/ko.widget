@@ -108,7 +108,7 @@
 
             // Then
             var el = $(".window-host > div:last-child");
-            equal($(el).children(0).data("widget"), "NamedWidget123");
+            equal($.trim($(el).children(0).data("widget")), "NamedWidget123");
         });
 
     function WidgetMock() {

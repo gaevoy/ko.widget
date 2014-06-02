@@ -102,7 +102,7 @@
             viewModel.widget(new WidgetMock());
 
             // Then
-            equal($(el).children(0).data("widget"), "WidgetMock");
+            equal($.trim($(el).children(0).data("widget")), "WidgetMock");
         });
 
     function WidgetMock() {
