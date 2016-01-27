@@ -3,3 +3,5 @@
 /_ReSharper.ko.widget/**
 /*.user
 /*.suo
+example/TypeScript/bin/**
+example/TypeScript/obj/**
