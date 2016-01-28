@@ -5,3 +5,7 @@
 /*.suo
 example/TypeScript/bin/**
 example/TypeScript/obj/**
+example/TypeScript/*.csproj.user
+example/TypeScript/*.suo
+example/TypeScript/**/*.js
+example/TypeScript/**/*.js.map

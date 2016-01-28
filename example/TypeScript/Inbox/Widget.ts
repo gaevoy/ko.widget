@@ -4,9 +4,14 @@ import Widget = require("ko.widget");
 import ViewModel = require("./ViewModel");
 var View = require("text!./View.htm");
 
-class InboxWidget {
+class InboxWidget extends Widget {
+    viewModel: ViewModel;
     constructor() {
-        Widget.extend(this, [ViewModel]);
+        super(this.viewModel = new ViewModel(), View);
+    }
+
+    init() {
+        return this.viewModel.init();
     }
 }
 

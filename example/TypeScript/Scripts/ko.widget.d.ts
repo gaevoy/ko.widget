@@ -1,8 +1,11 @@
-﻿interface WidgetStatic {
-    extend(self: any, args: Array<any>): void;
+﻿declare class Widget {
+    static extend(self: any, args: Array<any>): void;
+    constructor(viewModel: any, view: any);
+    appendTo(element: Element): void;
+    exportMethods(...methodNames: string[]): void;
+    init(): any;
+    dispose(): void;
 }
-
-declare var Widget: WidgetStatic;
 
 declare module "ko.widget" {
     export = Widget;

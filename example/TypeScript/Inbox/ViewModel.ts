@@ -1,13 +1,12 @@
 ﻿import ko = require("knockout");
+import $ = require("jquery");
 
 class ViewModel {
     name = ko.observable<string>();
 
-    constructor() {
-    } 
-    init(): void {
-        
-    } 
+    init(): JQueryPromise<any> {
+        return $.Deferred().promise();
+    }
 }
 
 export = ViewModel;
