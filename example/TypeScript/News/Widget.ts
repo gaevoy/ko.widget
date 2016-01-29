@@ -5,7 +5,7 @@ import { ViewModel } from "./ViewModel";
 var View = require("text!./View.htm");
 
 export class NewsWidget extends Widget {
-    viewModel: ViewModel;
+    private viewModel: ViewModel;
     constructor(title: string) {
         super(this.viewModel = new ViewModel(title), View);
     }

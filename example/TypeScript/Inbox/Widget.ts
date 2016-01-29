@@ -5,7 +5,7 @@ import { ViewModel } from "./ViewModel";
 var View = require("text!./View.htm");
 
 export class InboxWidget extends Widget {
-    viewModel: ViewModel;
+    private viewModel: ViewModel;
     constructor() {
         super(this.viewModel = new ViewModel(), View);
     }
