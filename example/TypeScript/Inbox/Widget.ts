@@ -1,10 +1,10 @@
 ﻿/// <amd-dependency path="text!./View.htm" />
 
 import Widget = require("ko.widget");
-import ViewModel = require("./ViewModel");
+import { ViewModel } from "./ViewModel";
 var View = require("text!./View.htm");
 
-class InboxWidget extends Widget {
+export class InboxWidget extends Widget {
     viewModel: ViewModel;
     constructor() {
         super(this.viewModel = new ViewModel(), View);
@@ -14,5 +14,3 @@ class InboxWidget extends Widget {
         return this.viewModel.init();
     }
 }
-
-export = InboxWidget;
