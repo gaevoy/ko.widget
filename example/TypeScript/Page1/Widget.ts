@@ -1,7 +1,7 @@
-﻿/// <amd-dependency path="text!./View.htm" />
+﻿/// <amd-dependency path="ko.widget" />
+/// <amd-dependency path="text!./View.htm" />
 
 import ko = require("knockout");
-import Widget = require("ko.widget");
 import { ViewModel } from "./ViewModel";
 var View = require("text!./View.htm");
 
