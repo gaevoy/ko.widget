@@ -16,15 +16,34 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Default.htm" />
     <Content Include="Inbox\View.htm" />
+    <TypeScriptCompile Include="Boot.ts" />
+    <TypeScriptCompile Include="News\ViewModel.ts" />
+    <TypeScriptCompile Include="News\Widget.ts" />
+    <TypeScriptCompile Include="Page1\ViewModel.ts" />
+    <TypeScriptCompile Include="Page1\Widget.ts" />
+    <TypeScriptCompile Include="Page2\ViewModel.ts" />
+    <TypeScriptCompile Include="Page2\Widget.ts" />
+    <TypeScriptCompile Include="Root\ViewModel.ts" />
+    <TypeScriptCompile Include="Root\Widget.ts" />
     <TypeScriptCompile Include="Scripts\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\knockout.d.ts" />
     <TypeScriptCompile Include="Scripts\require.d.ts" />
     <TypeScriptCompile Include="Scripts\_references.ts" />
+    <Content Include="News\View.htm" />
+    <Content Include="Page1\View.htm" />
+    <Content Include="Page2\View.htm" />
+    <Content Include="Root\View.htm" />
+    <Content Include="UserInfo\View.htm" />
     <Content Include="web.config" />
     <TypeScriptCompile Include="Scripts\ko.widget.d.ts" />
+    <TypeScriptCompile Include="UserInfo\ViewModel.ts" />
+    <TypeScriptCompile Include="UserInfo\Widget.ts" />
+    <TypeScriptCompile Include="App.ts" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Inbox\ViewModel.ts" />
@@ -38,6 +57,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <RootNamespace>App</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets')" />
@@ -66,10 +88,25 @@
     <TypeScriptTarget>ES5</TypeScriptTarget>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptToolsVersion>1.7</TypeScriptToolsVersion>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptOutFile>
+    </TypeScriptOutFile>
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot>
+    </TypeScriptSourceRoot>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptRemoveComments>true</TypeScriptRemoveComments>
     <TypeScriptSourceMap>false</TypeScriptSourceMap>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <PropertyGroup>
+    <PreBuildEvent>cd "$(ProjectDir)"
+xcopy ..\..\lib\*.* lib\ /e/y/f &gt; nul
+xcopy ..\..\dist\*.* dist\ /e/y/f &gt; nul</PreBuildEvent>
+  </PropertyGroup>
 </Project>

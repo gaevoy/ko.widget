@@ -1,0 +1,22 @@
+<div style="width: 200px">
+
+    <header style="overflow: hidden">
+        <div data-bind="inject: inbox" style="float: left"></div>
+        <div data-bind="inject: userInfo" style="float: right"></div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a data-bind="click: function(){ goto('Page1'); }" href="#">Page1</a></li>
+            <li><a data-bind="click: function(){ goto('Page2'); }" href="#">Page2</a></li>
+        </ul>
+    </nav>
+    <section data-bind="inject: page, injectAnimation: 'fadeIn'">
+    </section>
+
+    <footer style="overflow: hidden">
+        <div data-bind="inject: allNews" style="float: left"></div>
+        <div data-bind="inject: userNews" style="float: right"></div>
+    </footer>
+
+</div>

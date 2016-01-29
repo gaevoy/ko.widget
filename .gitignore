@@ -9,3 +9,4 @@ example/TypeScript/*.csproj.user
 example/TypeScript/*.suo
 example/TypeScript/**/*.js
 example/TypeScript/**/*.js.map
+.vs/
